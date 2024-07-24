@@ -3,7 +3,7 @@
 include('header.php');
 /////////////////////////////////////////
 mysql_select_db($database_demo, $demo);
-$query_menu = "SELECT * FROM paginas WHERE tipo = 2 AND estado = 1 ORDER BY id_pag ASC";
+$query_menu = "SELECT id_pag,titulo FROM paginas WHERE tipo = 2 AND estado = 1 AND id_destino = ".$destino_received." ORDER BY id_pag ASC";
 $menu = mysql_query($query_menu, $demo) or die(mysql_error());
 $row_menu = mysql_fetch_assoc($menu);
 $totalRows_menu = mysql_num_rows($menu);
@@ -36,7 +36,8 @@ xmlhttp.send();
 }
 </script>
 <section>
-<h1>Lista de secciones de la Pagina</h1><br/>
+<?php if($totalRows_menu > 0){ ?>
+  <h1 id="titleDestination"></h1>
 <div style="width: 300px; overflow: hidden;">
 <form id="agregar" style="margin-bottom: 20px; overflow: hidden;">
 <label>Seleccione la pagina:</label>&nbsp;&nbsp;
@@ -53,6 +54,11 @@ xmlhttp.send();
 <br />
 </div>
 <br/>
+<?php 
+} else {
+  echo '<p>No se han creados paginas para este destino</p>';
+} 
+?>
 </section>
 </body>
 </html>

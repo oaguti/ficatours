@@ -52,8 +52,6 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
                            GetSQLValueString(htmlentities($titulo), "text"),
                            GetSQLValueString($archivo, "text"),
                            GetSQLValueString($estado, "text")); 
-    
-    
     } else {
     $insertSQL = sprintf("INSERT INTO secciones (id_pag,titulo, estado) VALUES (%s, %s, %s)",
 						   GetSQLValueString($pagina, "text"),
@@ -67,17 +65,16 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
     
 /////////////////////////////////////////
 mysql_select_db($database_demo, $demo);
-$query_menu = "SELECT * FROM paginas WHERE tipo = '2'  ORDER BY id_pag ASC";
+$query_menu = "SELECT id_pag,titulo FROM paginas WHERE tipo = '2' AND id_destino = ".$destino_received."  ORDER BY id_pag ASC";
 $menu = mysql_query($query_menu, $demo) or die(mysql_error());
 $row_menu = mysql_fetch_assoc($menu);
 $totalRows_menu = mysql_num_rows($menu);
 ///////////////////////////////////////
-
-if(isset($pagina)){
-$query_lista = "SELECT * FROM secciones WHERE id_pag = '".$pagina."'  ORDER BY id_pag ASC";
-$lista = mysql_query($query_lista, $demo) or die(mysql_error());
-$row_lista = mysql_fetch_assoc($lista);
-$totalRows_lista = mysql_num_rows($lista);
+if($totalRows_menu > 0 ){
+  $query_lista = "SELECT * FROM secciones WHERE id_pag = '".$row_menu['id_pag']."'  ORDER BY id_pag ASC";
+  $lista = mysql_query($query_lista, $demo) or die(mysql_error());
+  $row_lista = mysql_fetch_assoc($lista);
+  $totalRows_lista = mysql_num_rows($lista);
 }
 ?>
 <script type="text/javascript">
@@ -132,6 +129,7 @@ function enviar(){
     </div>
 </div>
 <section>
+<?php if( $totalRows_menu > 0) { ?>
 <h1>Agregar secciones a la pagina</h1><br/>
 <div style="width: 100%; overflow: hidden;">
 <p><strong>Agregar lista</strong></p><br />
@@ -155,16 +153,22 @@ function enviar(){
 </form>
 </div>
 <br/><br />
-<p><strong>Secciones agregadas ultimamente:</strong></p><br />
-<?php if(isset($pagina)){ ?>
-<ul id="listar">
-    <?php do { ?>
-    <li><a href="editar_pagina.php?action=<?php echo $row_lista['id_section']; ?>"><?php echo $row_lista['titulo']; ?></a></li>
-    <?php } while ($row_lista = mysql_fetch_assoc($lista)); 
-    mysql_free_result($lista);
-    ?>
-  </ul>
-<?php } ?>
+
+<?php
+  if( $totalRows_lista > 0){
+    echo '<p><strong>Secciones agregadas ultimamente:</strong></p><br />';
+    echo '<ul id="listar">';
+      do { 
+        echo '<li><a href="editar_pagina.php?action='.$row_lista['id_section'].'">'.$row_lista['titulo'].'</a></li>';
+      } while ($row_lista = mysql_fetch_assoc($lista)); 
+      mysql_free_result($lista);
+    echo '</ul>';
+  }
+} else {
+  echo '<p>No se han creados paginas para este destino</p>';
+}//Final de validacion de paginas creadas 
+?>
 </section>
+<script src="js/destino.js"></script>
 </body>
 </html>

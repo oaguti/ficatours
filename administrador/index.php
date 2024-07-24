@@ -46,7 +46,7 @@ if (isset($_POST['usuario'])) {
   $loginUsername=$_POST['usuario'];
   $password=$_POST['clave'];
   $MM_fldUserAuthorization = "";
-  $MM_redirectLoginSuccess = "listar_paginas.php";
+  $MM_redirectLoginSuccess = "seleccionar_destino.php";
   $MM_redirectLoginFailed = "index.php";
   $MM_redirecttoReferrer = false;
   mysql_select_db($database_demo, $demo);
@@ -59,21 +59,22 @@ if (isset($_POST['usuario'])) {
   if ($loginFoundUser) {
      $loginStrGroup = "";
     
-	if (PHP_VERSION >= 5.1) {session_regenerate_id(true);} else {session_regenerate_id();}
+    if (PHP_VERSION >= 5.1) {session_regenerate_id(true);} else {session_regenerate_id();}
     //declare two session variables and assign them
     $_SESSION['MM_Username'] = $loginUsername;
-    $_SESSION['MM_UserGroup'] = $loginStrGroup;	   
-       
+    $_SESSION['MM_UserGroup'] = $loginStrGroup;
+    $_SESSION['destino'] = "";   
+        
 
     if (isset($_SESSION['PrevUrl']) && false) {
-      $MM_redirectLoginSuccess = $_SESSION['PrevUrl'];	
+        $MM_redirectLoginSuccess = $_SESSION['PrevUrl'];	
     }
     header("Location: " . $MM_redirectLoginSuccess );
-  }
-  else {
-	$error = "Usuario Incorrecto";  
-    echo '<script type="text/javascript">alert("Usuario o contrase�a incorrecta");location.href="'.$MM_redirectLoginFailed.'"; </script>';
-    //header('Location: '. $MM_redirectLoginFailed);
+  } else {
+    
+    $error = "Usuario Incorrecto";  
+      echo '<script type="text/javascript">alert("Usuario o contraseña incorrecta");location.href="'.$MM_redirectLoginFailed.'"; </script>';
+      //header('Location: '. $MM_redirectLoginFailed);
   }
 }
 ?>

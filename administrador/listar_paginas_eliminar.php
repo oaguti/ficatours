@@ -15,14 +15,14 @@ if ((isset($_GET['action']))) {
     
 /////////////////////////////////////////
 mysql_select_db($database_demo, $demo);
-$query_menu = "SELECT * FROM paginas WHERE estado = 1 ORDER BY id_pag ASC";
+$query_menu = "SELECT id_pag,titulo FROM paginas WHERE id_destino = ".$destino_received." ORDER BY id_pag ASC";
 $menu = mysql_query($query_menu, $demo) or die(mysql_error());
 $row_menu = mysql_fetch_assoc($menu);
 $totalRows_menu = mysql_num_rows($menu);
 mysql_close($demo);
 ?>
 <section>
-<h1>Paginas del sitio web</h1><br/>
+<h1 id="titleDestination"></h1>
 <br/><br/>
 <p><strong>Listado de paginas a eliminar</strong></p><br />
   <ul id="listar">
@@ -34,5 +34,6 @@ mysql_close($demo);
   </ul>
 <br /><br />
 </section>
+<script src="js/destino.js"></script>
 </body>
 </html>

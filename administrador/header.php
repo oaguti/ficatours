@@ -1,6 +1,7 @@
 <?php
 include('conexion.php');
 include('acceso.php');
+include('include/obtener_destino.php');
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -39,6 +40,7 @@ include('acceso.php');
 </header>
 <ul id="menu">
     <li><a href="datos.php">Datos de la empresa</a></li>
+    <li><a href="seleccionar_destino.php">Destinos</a></li>
 	<li><a href="#">Paginas</a>
         <ul>
             <li><a href="listar_paginas.php">Agregar pagina</a></li>
@@ -71,11 +73,8 @@ include('acceso.php');
         <ul>
             <li><a href="agregar_imagen.php">Agregar imagen</a></li>
             <li><a href="eliminar_imagenes.php">Eliminar imagen</a></li>
-            
        </ul>
     </li>
-    <li><a href="#">Promociones</a>
-        
-    </li>
+    <li><a href="#">Promociones</a></li>
     <li><a href="<?php echo $logoutAction ?>">Cerrar sesi&oacute;n</a></li>
 </ul>
